@@ -1,5 +1,5 @@
 # * Description: Nginx image -> latest tag is prohibited, so check every time the latest version
-FROM alpine:3.21
+FROM debian:11.11
 
 RUN apk update && \
 	apk add nginx openssl && \
