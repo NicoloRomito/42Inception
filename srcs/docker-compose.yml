@@ -1,22 +1,16 @@
-version: '3.7'
 
 services:
 
-	# Nginx
   nginx:
     container_name: nginx
 
     build: ./requirements/nginx/.
-    image: nginx:42
-    
-    depends_on:
-      - wordpress
     
     ports:
       - "443:443"
 
     volumes:
-      - wordpress:/var/www/html
+      - ${VOLUME_ROOT}:/var/www/html
     
     networks:
       - inception
@@ -29,13 +23,16 @@ services:
     container_name: wordpress
 
     build: ./requirements/wordpress/.
-    image: wordpress:42
+
+    ports:
+      - "9000:9000"
 
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
 
     volumes:
-      -wordpress:/var/www/html
+      - ${VOLUME_ROOT}:/var/www/html
 
     env_file:
       - .env
@@ -48,10 +45,14 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/.
-    image: mariadb:42
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
     volumes:
-      - mariadb:/var/lib/mysql
+      - ${VOLUME_ROOT}/mariadb:/var/lib/mysql
 
     env_file:
       - .env
@@ -63,22 +64,11 @@ services:
 
 networks:
   inception:
-    name: inception
-		
+    driver: bridge
+
 volumes:
-  wordpress:
-    name: wordpress
-    driver: local
-    driver_opts:
-      device: /home/vboxuser/Desktop/42Inception/srcs/wordpress
-      type: none
-      o: bind
   mariadb:
-    name: mariadb
-    driver: local
-    driver_opts:
-      device: /home/vboxuser/Desktop/42Inception/srcs/mariadb
-      type: none
-      o: bind
+  wordpress:
+
 
 
