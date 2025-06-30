@@ -2,12 +2,17 @@
 
 	#mysql settings 
 	define('DB_NAME', 'wordpress');
-	define('DB_USER', 'user');
-	define('DB_PASSWORD', 'password');
+	define('DB_USER', 'gianni');
+	define('DB_PASSWORD', 'nino');
 	define('DB_HOST', 'mariadb');
 	define('DB_CHARSET', 'utf8');
 	define('DB_COLLATE', '');
 	define('WP_ALLOW_REPAIR', true);
+
+	define( 'WP_SITEURL', 'https://nromito.42.fr' );
+	define( 'WP_HOME',    'https://nromito.42.fr' );
+	define( 'FORCE_SSL_ADMIN', true );   // opzionale ma consigliato
+
 
 	# Auth unique keys and salts.
 	define('AUTH_KEY',         'jh|Sk{.~y7]*Z5oLkB&yk }E0`-O+H+h~~}BG:1pzOK[UlyD&Vv?whE=zXc=}oB{');
@@ -19,8 +24,8 @@
 	define('LOGGED_IN_SALT',   'n2jk7zm1Tghe}#K4}l+-6A(b#y#-](zt [g2-eL3co:+*~nGKN]-?/}4|9stL}so');
 	define('NONCE_SALT',       '_va:=5T.n?>KCA(`vJ3kmk6O0E#&h-F2g_Sxz:P(_o]R#37-`AUn@D|Bc6}+}7M6');
 
-	define( 'WP_REDIS_HOST', 'redis' );
-	define( 'WP_REDIS_PORT', 6379 );     
+	// define( 'WP_REDIS_HOST', 'redis' );
+	// define( 'WP_REDIS_PORT', 6379 );
 
 	define('WP_CACHE', true);
 

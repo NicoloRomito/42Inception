@@ -1,10 +1,12 @@
 # * Description: Nginx image -> latest tag is prohibited, so check every time the latest version
 FROM debian:11.11
 
-RUN apk update && \
-	apk add nginx openssl && \
-	mkdir -p /run/nginx
+RUN apt -y update && apt install -y nginx && apt install openssl -y
+
+COPY ./tools/script.sh /script.sh
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
-CMD [ "nginx", "-g", "daemon off;" ]
+RUN chmod +x /script.sh
+
+ENTRYPOINT ["/script.sh"]
