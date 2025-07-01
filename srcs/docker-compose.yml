@@ -5,6 +5,9 @@ services:
     container_name: nginx
 
     build: ./requirements/nginx/.
+
+    depends_on:
+      - wordpress
     
     ports:
       - "443:443"
