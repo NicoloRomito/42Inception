@@ -13,13 +13,14 @@ services:
       - "443:443"
 
     volumes:
-      - ${VOLUME_ROOT}:/var/www/html
+      - /home/nromito/data:/var/www/html
     
     networks:
       - inception
 
     env_file:
       - .env
+
     restart: always
 
   wordpress:
@@ -35,7 +36,7 @@ services:
         condition: service_healthy
 
     volumes:
-      - ${VOLUME_ROOT}:/var/www/html
+      - /home/nromito/data/wordpress:/var/www/html
 
     env_file:
       - .env
@@ -55,7 +56,7 @@ services:
       retries: 10
 
     volumes:
-      - ${VOLUME_ROOT}/mariadb:/var/lib/mysql
+      - /home/nromito/data/mariadb:/var/lib/mysql
 
     env_file:
       - .env
@@ -71,7 +72,19 @@ networks:
 
 volumes:
   mariadb:
+    name: mariadb-volume
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/nromito/data/mariadb
+      o: bind
   wordpress:
+    name: wordpress-volume
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/nromito/data/wordpress
+      o: bind
 
 
 
