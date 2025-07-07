@@ -1,50 +1,30 @@
-
 services:
-
-  nginx:
-    container_name: nginx
-
-    build: ./requirements/nginx/.
-
-    depends_on:
-      - wordpress
-    
-    ports:
-      - "443:443"
-
-    volumes:
-      - wordpress:/var/www/html
-    
-    networks:
-      - inception
-
-    env_file:
-      - .env
-
-    restart: always
-
   wordpress:
     container_name: wordpress
-
     build: ./requirements/wordpress/.
-
-    ports:
-      - "9000:9000"
-
     depends_on:
       mariadb:
         condition: service_healthy
-
     volumes:
       - wordpress:/var/www/html
-
     env_file:
       - .env
-
     networks:
       - inception
-    
-    restart: always
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx/.
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html:ro
+    env_file:
+      - .env
+    networks:
+      - inception
 
   mariadb:
     container_name: mariadb
@@ -54,37 +34,27 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-
     volumes:
       - mariadb:/var/lib/mysql
-
     env_file:
       - .env
-
     networks:
       - inception
-    
-    restart: always
-
-networks:
-  inception:
-    driver: bridge
 
 volumes:
-  mariadb:
-    name: mariadb-volume
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/nromito/data/mariadb
-      o: bind
   wordpress:
-    name: wordpress-volume
     driver: local
     driver_opts:
       type: none
       device: /home/nromito/data/wordpress
       o: bind
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/nromito/data/mariadb
+      o: bind
 
-
-
+networks:
+  inception:
+    driver: bridge

@@ -69,3 +69,10 @@ docker ps
 ```bash
 docker compose version
 ```
+
+## Create docker volume directories
+```bash
+sudo rm -rf /home/nromito/data  # Only if you want a clean slate
+sudo mkdir -p /home/nromito/data/wordpress /home/nromito/data/mariadb
+sudo chown -R $USER:$USER /home/nromito/data
+```
